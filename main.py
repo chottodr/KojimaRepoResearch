@@ -1,6 +1,6 @@
-#main.py
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#main.py
 
 def help():
     print "command--------detail"
@@ -20,7 +20,7 @@ def repo_info():
 
 if __name__ == "__main__":
     menu = ""
-    print"how to use ->help"
+    print"How to use ->help"
     while menu != "exit":
         menu = raw_input(">")
         if menu == "help":
@@ -31,5 +31,7 @@ if __name__ == "__main__":
             repo_info()
         elif menu =="exit":
             exit()
-
+        else:
+            print menu,"command is not exist."
+            print "How to use ->help"
 

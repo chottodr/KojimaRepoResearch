@@ -1,6 +1,6 @@
-#repo_info.py
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#repo_info.py
 
 from github import Github
 import getpass
@@ -17,4 +17,6 @@ print "Owner:",
 print repo.owner.name
 print "Repositoty ID:",
 print repo.id
+
+
 
