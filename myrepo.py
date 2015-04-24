@@ -1,6 +1,6 @@
-#myrepo.py
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#myrepo.py
 
 from github import Github
 import getpass
