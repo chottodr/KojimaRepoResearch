@@ -31,6 +31,8 @@ if __name__ == "__main__":
             repo_info()
         elif menu =="exit":
             exit()
+        elif menu == "":
+
         else:
             print menu,"command is not exist."
             print "How to use ->help"
