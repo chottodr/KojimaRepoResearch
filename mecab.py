@@ -2,8 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import MeCab
-
-m = MeCab.Tagger("-Ochasen")
-
+print "choose output menu (mecabrc,ochasen,owakati,oyomi)"
+menu = raw_input(">")
 text = raw_input(">")
-print m.parse(text)
+
+if menu == "mecabrc":
+    m = MeCab.Tagger("mecabrc")
+elif menu == "ochasen":
+    m = MeCab.Tagger("-Ochasen")
+elif menu == "owakati":
+    m = MeCab.Tagger("-Owakati")
+elif menu == "oyomi":
+    m = MeCab.Tagger("-Oyomi")   
+
+try:
+    print m.parse(text)
+except NameError:
+    print menu,"menu is not exist"
