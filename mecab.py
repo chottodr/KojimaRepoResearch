@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#mecab.py
 
 import MeCab
 print "choose output menu (mecabrc,ochasen,owakati,oyomi)"
-menu = raw_input(">")
-text = raw_input(">")
+menu = raw_input("menu>")
+text = raw_input("text>")
 
 if menu == "mecabrc":
     m = MeCab.Tagger("mecabrc")
