@@ -17,6 +17,12 @@ elif menu == "oyomi":
     m = MeCab.Tagger("-Oyomi")   
 
 try:
-    print m.parse(text)
+    node = m.parseToNode(text)
+    while node:    
+        print node.feature
+        node = node.next
+#    f = open('mecabtxt/mtxt','a')
+#    f.write(mtxt)
+#    f.close()
 except NameError:
     print menu,"menu is not exist"
