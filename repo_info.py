@@ -21,13 +21,14 @@ repo = g.get_repo(repo_name)
 f = open('repo_comments','a')
 start_time = time.clock()
 revision = repo.get_commits()
-
+n=0
 for rev in revision:
     rev_sha = rev.sha
     cmt = repo.get_commit(rev_sha)
     commit_comment = cmt.commit.message.encode('utf_8')
     f.write(commit_comment)
-    
+    print n
+    n=n+1
 print "Owner:",
 print repo.owner.name
 print "Repositoty ID:",
