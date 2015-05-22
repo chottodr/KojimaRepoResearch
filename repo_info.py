@@ -18,7 +18,7 @@ repo_name = raw_input("Repository_Name>")
 #take repository info
 repo = g.get_repo(repo_name)
 
-f = open('repo_comments','a')
+f = open('repotxt/repo_comments','a')
 start_time = time.clock()
 revision = repo.get_commits()
 n=0
