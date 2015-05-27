@@ -6,11 +6,14 @@ from github import Github
 import getpass
 import time
 
-#input own account info
-gusername = raw_input("Github_ID>")
-gpassword = getpass.getpass()
+#get token
+t = open('token','r')
+token = t.read()
+token = token.rstrip('\n')
 
-g = Github(gusername,gpassword)
+#Create GitHub INSTANCE
+g = Github(token)
+t.close()
 
 #show repositoory from repository fullname
 repo_name = raw_input("Repository_Name>")
@@ -18,7 +21,7 @@ repo_name = raw_input("Repository_Name>")
 #take repository info
 repo = g.get_repo(repo_name)
 
-f = open('repo_comments','a')
+f = open('repotxt/repo_comments','w')
 start_time = time.clock()
 revision = repo.get_commits()
 n=0

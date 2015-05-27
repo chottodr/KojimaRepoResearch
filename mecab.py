@@ -4,16 +4,15 @@
 
 import MeCab
 
-
-text = raw_input("text>")
+rc = open('repotxt/repo_comments','r')
+f = open('mecabtxt/keyword','w')
 m = MeCab.Tagger("-Ochasen")
-
-node = m.parseToNode(text)
-while node:
-    if node.feature.split(",")[0] == "名詞":
-        print node.surface
-    node = node.next
-        
-    #f = open('mecabtxt/mtxt','a')
-    #f.write(mtxt)
-    #f.close()
+for comment in rc:
+    node = m.parseToNode(comment) 
+    while node:
+        if node.feature.split(",")[0] == "名詞":
+            print node.surface
+            f.write(node.surface)
+            f.write("\n")
+        node = node.next 
+f.close()
