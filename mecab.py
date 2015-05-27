@@ -3,18 +3,16 @@
 #mecab.py
 
 import MeCab
-import pickle
-text = raw_input("text>")
-m = MeCab.Tagger("-Ochasen")
-node = m.parseToNode(text)
 
-f = open('mecabtxt/keyword','a')
-norm = []
-while node:
-    if node.feature.split(",")[0] == "名詞":
-        print node.surface
-        f.write(node.surface)
-        f.write("\n")
-        #norm.append(node.surface)
-    node = node.next        
+rc = open('repotxt/repo_comments','r')
+f = open('mecabtxt/keyword','w')
+m = MeCab.Tagger("-Ochasen")
+for comment in rc:
+    node = m.parseToNode(comment) 
+    while node:
+        if node.feature.split(",")[0] == "名詞":
+            print node.surface
+            f.write(node.surface)
+            f.write("\n")
+        node = node.next 
 f.close()
