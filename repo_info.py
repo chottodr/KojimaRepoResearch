@@ -23,11 +23,23 @@ repo = g.get_repo(repo_name)
 
 f = open('repotxt/repo_comments','w')
 start_time = time.clock()
+#get all revisions (commits)
+###############################################
+#*sha
+#*commit--author
+#       |_commiter
+#       |_message
+#more detail in
+#https://developer.github.com/v3/repos/commits/
+###############################################
+
 revision = repo.get_commits()
 n=0
 for rev in revision:
     rev_sha = rev.sha
+    #get commit
     cmt = repo.get_commit(rev_sha)
+    #get message
     commit_comment = cmt.commit.message.encode('utf_8')
     f.write(commit_comment)
     print n
