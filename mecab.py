@@ -15,4 +15,5 @@ for comment in rc:
             f.write(node.surface)
             f.write("\n")
         node = node.next 
+rc.close()
 f.close()
