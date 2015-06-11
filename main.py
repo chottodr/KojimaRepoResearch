@@ -7,6 +7,7 @@ def help():
     print "myrepos        show your repository"
     print "repo_info      show repository's infomation"
     print "mecab          use mecab. you will type string "
+    print "insdb         insert commits infomation(now, sha,message)"
     print "exit           exit"
 
 def myrepos():
@@ -21,6 +22,9 @@ def repo_info():
 
 def mecab():
     import mecab
+
+def insdb():
+    import db
 
 if __name__ == "__main__":
     menu = ""
@@ -37,6 +41,8 @@ if __name__ == "__main__":
             mecab()
         elif menu =="exit":
             exit()
+        elif menu == "insdb":
+            insdb()
         elif menu == "":
             pass #何もコマンドを入力しなければ何も起こらない
         else:
