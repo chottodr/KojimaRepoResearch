@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-#repo_info.py
+# -*- coding:utf-8 -*-
 
+import sys
 from github import Github
-import getpass
-import time
+from pymongo import Connection
 
 #get token
 t = open('token','r')
@@ -20,10 +19,6 @@ repo_name = raw_input("Repository_Name>")
 
 #take repository info
 repo = g.get_repo(repo_name)
-
-f = open('repotxt/repo_comments','w')
-start_time = time.clock()
-#get all revisions (commits)
 ###############################################
 #*sha
 #*commit--author
@@ -33,21 +28,22 @@ start_time = time.clock()
 #https://developer.github.com/v3/repos/commits/
 ###############################################
 
+#connection
+connect = Connection('localhost',27017)
+#dbの呼び出し
+db = connect.test
+#collection(table)の呼び出し(同時に初期化)
+col = db.commit
+col.drop()
+
+#get all revisions (commits)
 revision = repo.get_commits()
 n=0
+print "takeing commit message..."
 for rev in revision:
-    rev_sha = rev.sha
-    #get commit
-    cmt = repo.get_commit(rev_sha)
-    #get message
-    commit_comment = cmt.commit.message.encode('utf_8')
-    f.write(commit_comment)
+    #取得した各リビジョンに有る情報をDBに格納
+    col.save({'SHA':rev.sha,'message':rev.commit.message.encode('utf-8')})
+    n = n+1
+    print "insert commit to db no.",
     print n
-    n=n+1
-print "Owner:",
-print repo.owner.name
-print "Repositoty ID:",
-print repo.id
-end_time = time.clock()
-print "time = %f" %(end_time-start_time)
-f.close()
+    #print rev.commit.message.encode('utf-8')
