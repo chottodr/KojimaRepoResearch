@@ -14,7 +14,7 @@ g = Github(token)
 t.close()
 
 #show repositoory from repository fullname
-repo_name = raw_input("Repository_Name>")
+repo_name = "b1012011/Kojima_repo_research"#raw_input("Repository_Name>")
 
 #take repository info
 repo = g.get_repo(repo_name)
@@ -22,6 +22,7 @@ repo = g.get_repo(repo_name)
 tsv = open('repotxt/repo_files.tsv','w')
 revision = repo.get_commits()
 n=0
+f_l=[]
 for rev in revision:
     n=n+1
     print "Revision...",
@@ -29,8 +30,15 @@ for rev in revision:
     if rev.author is None:
         files = repo.get_commit(rev.sha).files
         for f in files:
-            tsv.write(f.filename)
-            tsv.write("\t")
-            tsv.write(str(f.changes))
-            tsv.write("\n")
-
+            f_l.append((f.filename.encode('utf-8'),f.changes,f.additions,f.deletions))
+#            tsv.write(f.filename)
+#            tsv.write("\t")
+#            tsv.write(str(f.changes))
+#            tsv.write("\n")
+f_l = sorted(f_l)
+for line in range(len(f_l)):
+    for m in range(0,4):
+        tsv.write(str(f_l[line][m]))
+        tsv.write("\t")
+    tsv.write("\n")
+tsv.close
