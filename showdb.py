@@ -5,10 +5,11 @@ import sys
 from pymongo import Connection
 
 #generate DB instance
-connect = Connection('localhost',27017)
+connect = Connection()
 db = connect.test
 col = db.commit
-for doc in col.find():
+for doc in col.find({ "message": "first commit" }):
     print "{",
-    print "\n".join("%s: %s" % i for i in doc.items()),
+    print doc.values()
+    #print "\n".join("%s: %s" % i for i in doc.items()),
     print "}\n"

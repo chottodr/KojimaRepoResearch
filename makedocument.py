@@ -22,19 +22,19 @@ repo = g.get_repo(repo_name)
 doc = open('repotxt/repo_files.txt','w')
 revision = repo.get_commits()
 n=0
-for rev in range(0,50):#revision:
+for rev in revision:
     n=n+1
     print "commit...",
     print n
-    doc.write(rev.commit.message.encode('utf-8'))
+    doc.write(rev.commit.message.encode('utf-8').replace("\n",""))
     doc.write(" ")
     files = repo.get_commit(rev.sha).files
     for f in files:
         doc.write(f.filename.encode('utf-8'))
-        doc.write("-")
+        doc.write(" ")
         doc.write(f.status)
-        doc.write("-")
-        doc.write(str(f.changes))
         doc.write(" ")
     doc.write("\n")
+    if n == 50:
+        break
 

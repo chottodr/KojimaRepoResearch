@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#makedocument.py
+#makedocument_ns.py
 
 from github import Github
 
@@ -19,13 +19,13 @@ repo_name = "ruby/ruby"#raw_input("Repository_Name>")
 #take repository info
 repo = g.get_repo(repo_name)
 
-doc = open('repotxt/repo_files.txt','w')
+doc = open('repotxt_ns/repo_files_ns.txt','w')
 revision = repo.get_commits()
 n=0
-for rev in range(0,50):#revision:
+for rev in revision:
     n=n+1
-    print "commit...",
-    print n
-    doc.write(rev.commit.message.encode('utf-8'))
+    doc.write(rev.commit.message.encode('utf-8').replace("\n",""))
     doc.write("\n")
+    if n == 50:
+        break
 
