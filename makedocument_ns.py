@@ -24,8 +24,10 @@ revision = repo.get_commits()
 n=0
 for rev in revision:
     n=n+1
+    print "commit..."
+    print n
     doc.write(rev.commit.message.encode('utf-8').replace("\n",""))
     doc.write("\n")
-    if n == 50:
+    if n == 500:
         break
 

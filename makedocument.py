@@ -35,6 +35,6 @@ for rev in revision:
         doc.write(f.status)
         doc.write(" ")
     doc.write("\n")
-    if n == 50:
+    if n == 500:
         break
 
