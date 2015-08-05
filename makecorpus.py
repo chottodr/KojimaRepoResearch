@@ -33,12 +33,20 @@ def cleantxt(documents, path):
         documents.pop(0)
         documents.append(t)
     #print documents
-    haihun = re.compile('.\-.')
+    haihun = re.compile('\-.|.\-.|.\-')
     for t in documents:
         t = haihun.sub("",t)
         documents.pop(0)
         documents.append(t)
     #print documents
+
+    colon = re.compile('\:.|.\:.|.\:')
+    for t in documents:
+        t = colon.sub("",t)
+        documents.pop(0)
+        documents.append(t)
+    #print documents
+
 
     nari = re.compile('\<|.\<|\<.|.\<.|\>|.\>|\>.|.\>.')
     for t in documents:
@@ -57,7 +65,6 @@ def cleantxt(documents, path):
         t = kakukakko.sub("",t)
         documents.pop(0)
         documents.append(t)
-    print documents
 
     chukakko = re.compile('\{|.\{|\{.|.\{.|\}|.\}|\}.|.\}.')
     for t in documents:
@@ -82,13 +89,14 @@ def cleantxt(documents, path):
     texts = [[word for word in text if word not in tokens_once]for text in texts]
     return texts
 
+#コーパスの作成(bag-of-word
 def makebowcorpus(texts, path):
     path = path.rstrip(".txt") 
 
     dictionary = corpora.Dictionary(texts)
     dictionary.save(path+'.dict')
     dictionary.save_as_text(path+'_text.dict')
-    #コーパスの作成(bag-of-word
+
     corpus = [dictionary.doc2bow(text) for text in texts]
     corpora.MmCorpus.serialize(path+'.mm', corpus)
 
@@ -99,8 +107,7 @@ def maketfidfcorpus(corpus, path):
     tfidf.save(path+".tfidf")
     corpus_tfidf = tfidf[corpus]
 
-#index = similarities.SparseMatrixSimilarity(corpus,num_features=len(dictionary))
-#index.save(path+".index")
+#LDAモデルの作成(bowコーパス
 def makeLDA(num, path):
     path = path.rstrip(".txt")
     print path+".dict"
@@ -111,6 +118,7 @@ def makeLDA(num, path):
     lda.save(path+"_lda.model")
     logfile = open(path+'_topic.txt', 'w')
     print path+'_topic.txt'
+    print 
     n=0
     for i in range(0, lda.num_topics):
         n=n+1
