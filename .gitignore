@@ -1,5 +1,6 @@
 *.pyc
 token
 repotxt/
+repotxt_ns/
 mecabtxt/
 commit_infomation

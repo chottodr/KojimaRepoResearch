@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#file_changes.py
+#makedocument.py
 
 from github import Github
 
@@ -14,28 +14,27 @@ g = Github(token)
 t.close()
 
 #show repositoory from repository fullname
-repo_name = "LightTable/Vim"#raw_input("Repository_Name>")
+repo_name = "ruby/ruby"#raw_input("Repository_Name>")
 
 #take repository info
 repo = g.get_repo(repo_name)
 
-tsv = open('repotxt/repo_files.tsv','w')
+doc = open('repotxt/repo_files.txt','w')
 revision = repo.get_commits()
 n=0
-f_l=[]
 for rev in revision:
     n=n+1
-    print "Revision...",
+    print "commit...",
     print n
+    doc.write(rev.commit.message.encode('utf-8').replace("\n",""))
+    doc.write(" ")
     files = repo.get_commit(rev.sha).files
     for f in files:
-        f_l.append((f.filename.encode('utf-8'),f.changes,f.additions,f.deletions))
+        doc.write(f.filename.encode('utf-8'))
+        doc.write(" ")
+        doc.write(f.status)
+        doc.write(" ")
+    doc.write("\n")
+    if n == 500:
+        break
 
-
-f_l = sorted(f_l)
-for line in range(len(f_l)):
-    for m in range(0,4):
-        tsv.write(str(f_l[line][m]))
-        tsv.write("\t")
-    tsv.write("\n")
-tsv.close
