@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #makedocument_ns.py
 
+import sys
 from github import Github
 
 #get token
@@ -19,7 +20,14 @@ repo_name = "ruby/ruby"#raw_input("Repository_Name>")
 #take repository info
 repo = g.get_repo(repo_name)
 
-doc = open('repotxt_ns/repo_files_ns.txt','w')
+argvs = sys.argv
+try:
+    path = argvs[1]
+except IndexError:
+    print "please specify directory path to save txt file!!"
+    sys.exit()
+
+doc = open(path+'/repo_files.txt','w')
 revision = repo.get_commits()
 n=0
 for rev in revision:
