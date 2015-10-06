@@ -121,10 +121,6 @@ def makeLDA(num, path):
     print 
     n=0
     for i in range(0, lda.num_topics):
-        n=n+1
-        logfile.write("topic")
-        logfile.write(str(n))
-        logfile.write("#")
         logfile.write(lda.print_topic(i))
         logfile.write("\n")
     corpus_lda = lda[corpus]

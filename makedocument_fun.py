@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#makedocument.py
-
+#makedocument_ns.py
+##################
+#実行例 makedocument_fun.py 保存ディレクトリpath
+#
+#################
 import sys
 from github import Github
+import MeCab
 
 #get token
 t = open('token','r')
@@ -32,15 +36,14 @@ revision = repo.get_commits()
 n=0
 for rev in revision:
     n=n+1
-    print "commit...",
+    print "commit..."
     print n
-    doc.write(rev.commit.message.encode('utf-8').replace("\n",""))
-    doc.write(" ")
-    files = repo.get_commit(rev.sha).files
-    for f in files:
-        doc.write(f.filename.encode('utf-8'))
-        doc.write(" ")
-    doc.write("\n")
-    if n == 500:
-        break
+    if rev.author is None:
+        m = MeCab.Tagger("-Ochasen")
+        node = m.parseToNode(rev.commit.message.encode("utf-8").replace("\n",""))
+        while node:
+            if node.feature.split(".")[0] == "名詞":
+                print node.surface
+                doc.write(node.surface)
+        doc.write("\n")
 
