@@ -1,7 +1,9 @@
 #!/usr/bin/env/ python
 # -*- coding: utf-8 -*-
 #makecorpus.py
-
+##example############################################
+#python makecorpus.py directory_path/repo_files.txt #
+#####################################################
 import re
 import sys
 from pprint import pprint
@@ -27,12 +29,30 @@ def cleantxt(documents, path):
     stoplist = set(sw.split('\n'))
 
     txt = []
-    dslash = re.compile('.//.')
+    slash = re.compile('./.')
     for t in documents:
-        t = dslash.sub("",t)
+        t = slash.sub("",t)
         documents.pop(0)
         documents.append(t)
-    #print documents
+
+    at = re.compile('.@.')
+    for t in documents:
+        t = at.sub("",t)
+        documents.pop(0)
+        documents.append(t)
+
+    dot = re.compile('.\..')
+    for t in documents:
+        t = dot.sub("",t)
+        documents.pop(0)
+        documents.append(t)
+
+    ub = re.compile('._.')
+    for t in documents:
+        t = ub.sub("",t)
+        documents.pop(0)
+        documents.append(t)
+    
     haihun = re.compile('\-.|.\-.|.\-')
     for t in documents:
         t = haihun.sub("",t)
@@ -126,10 +146,25 @@ def makeLDA(num, path):
     corpus_lda = lda[corpus]
     corpora.MmCorpus.serialize(path+'_lda.mm', corpus_lda)
 
+def makeHDP(path):
+    path = path.rstrip(".txt")
+    print path+".dict"
+    dictionary = corpora.Dictionary.load(path+".dict")
+    corpus = corpora.MmCorpus(path+".mm")
+    hdp = models.HdpModel(corpus=corpus,id2word=dictionary)
+    hdp.save(path+"_hdp.model")
+    logfile = open(path+'_hdp_topic.txt', 'w')
+    hdp.print_topics(topics=20, topn=10)
+    for i in hdp.print_topics():
+        print i
+    corpus_hdp = hdp[corpus]
+    corpora.MmCorpus.serialize(path+'_hdp.mm', corpus_hdp)
+
 if __name__=="__main__":
     argvs = sys.argv
     path = argvs[1]
     document = calltxt(path)
     texts = cleantxt(document, path)
     makebowcorpus(texts, path)
-    makeLDA(20,path)
+    #makeHDP(path)
+    makeLDA(3,path)

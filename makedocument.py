@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #makedocument.py
-
+###example################################
+# python makedocument.py directory_path
+##########################################
 import sys
 from github import Github
 
