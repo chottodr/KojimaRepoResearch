@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #makecorpus.py
 ##example############################################
-#python makecorpus.py directory_path/repo_files.txt #
+#python makecorpus.py hoge.txt #
 #####################################################
 import re
 import sys
