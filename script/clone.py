@@ -48,8 +48,9 @@ def source_line(repo):
 
 if __name__ =="__main__":
 
-    argvs = sys.argv
-    repo = argvs[1]
+    #argvs = sys.argv
+    #repo = argvs[1]
+    repo = raw_input("repository_full_name->")
     clone(repo)
     summaries(repo)
     SHA(repo)

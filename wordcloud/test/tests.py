@@ -41,19 +41,19 @@ class Test(unittest.TestCase):
             
         #self.assertTrue(found)
 
-    def test_layouts(self):
-        start = time.time()
-        tags = make_tags(get_tag_counts(self.hound.read())[:80], maxsize=120)
-        for layout in LAYOUTS:
-            create_tag_image(tags, os.path.join(self.test_output, 'cloud_%s.png' % layout),
-                             size=(900, 600),
-                             background=(255, 255, 255, 255),
-                             layout=layout, fontname='Cantarell')
-        print "Duration: %d sec" % (time.time() - start)
+#    def test_layouts(self):
+#        start = time.time()
+#        tags = make_tags(get_tag_counts(self.hound.read())[:80], maxsize=120)
+#        for layout in LAYOUTS:
+#            create_tag_image(tags, os.path.join(self.test_output, 'cloud_%s.png' % layout),
+#                             size=(900, 600),
+#                             background=(255, 255, 255, 255),
+#                             layout=layout, fontname='Cantarell')
+#        print "Duration: %d sec" % (time.time() - start)
         
     def test_large_tag_image(self):
         start = time.time()
-        tags = make_tags(get_tag_counts(self.hound.read())[:80], maxsize=120, 
+        tags = make_tags(get_tag_counts(self.hound.read())[:80], maxsize=100, 
                          colors=COLOR_SCHEMES['audacity'])
         create_tag_image(tags, os.path.join(self.test_output, 'cloud_large.png'), 
                          size=(900, 600), background=(0, 0, 0, 255), 

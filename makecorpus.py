@@ -6,11 +6,13 @@
 #####################################################
 import re
 import sys
+import string
+import nltk
 from pprint import pprint
 from gensim import corpora, models, similarities
 
 
-def calltxt(path):
+def calltxt(path):##1要素1コミットメッセージの文書配列を返す
     document = []
     doc = open(path,'r')
     texts = []
@@ -18,89 +20,31 @@ def calltxt(path):
     linesl = data.split('\n')
     for line in linesl:
         document.append((line))
-    document.pop()
+    #document.pop()
+    #print document
     return document
 
-def cleantxt(documents, path):
+def cleantxt(documents, path):#不必要な文字を削除
     doc = open(path,'r')
     data = doc.read()
+    #ストップワードの設定
     sw = open("stopword.txt",'r').read()
-    #print sw
     stoplist = set(sw.split('\n'))
 
-    txt = []
-    slash = re.compile('./.')
-    for t in documents:
-        t = slash.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-
-    at = re.compile('.@.')
-    for t in documents:
-        t = at.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-
-    dot = re.compile('.\..')
-    for t in documents:
-        t = dot.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-
-    ub = re.compile('._.')
-    for t in documents:
-        t = ub.sub("",t)
-        documents.pop(0)
-        documents.append(t)
+    #取り除くメタ文字の設定
+    metaTrans = string.maketrans("`~=.,<>?_{}|*+[]^-;:!\"#$%&'@()\\/","                                ")
+    texts = [doc.translate(metaTrans) for doc in documents]
+    #print texts
     
-    haihun = re.compile('\-.|.\-.|.\-')
-    for t in documents:
-        t = haihun.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-    #print documents
+    #文書内単語分けと小文字化・ストップワードの削除
+    texts = [[word for word in document.lower().split() if word not in stoplist]for document in texts]
+    #print texts
 
-    colon = re.compile('\:.|.\:.|.\:')
-    for t in documents:
-        t = colon.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-    #print documents
+    #残った単語に対する語幹の削除（ステミング）
+    porter = nltk.PorterStemmer()
+    texts = [[porter.stem(word.decode('utf-8')) for word in text]for text in texts]
+    #print texts
 
-
-    nari = re.compile('\<|.\<|\<.|.\<.|\>|.\>|\>.|.\>.')
-    for t in documents:
-        t = nari.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-    #print documents
-    marukakko = re.compile('\(|.\(|\(.|.\(.|\)|.\)|\).|.\).')
-    for t in documents:
-        t = marukakko.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-    #print documents
-    kakukakko = re.compile('\[|.\[|\[.|.\[.|\]|.\]|\].|.\].')
-    for t in documents:
-        t = kakukakko.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-
-    chukakko = re.compile('\{|.\{|\{.|.\{.|\}|.\}|\}.|.\}.')
-    for t in documents:
-        t = chukakko.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-
-    ast = re.compile('\*')
-    for t in documents:
-        t = ast.sub("",t)
-        documents.pop(0)
-        documents.append(t)
-    #print documents 
-    #小文字化とストップワードの削除
-    texts = [[word for word in document.lower().split() if word not in stoplist]for document in documents]
-    
     #出現回数が1回のトークン作成
     all_tokens = sum(texts, [])
     tokens_once = set(word for word in set(all_tokens) if all_tokens.count(word) == 1)
@@ -118,6 +62,7 @@ def makebowcorpus(texts, path):
     dictionary.save_as_text(path+'_text.dict')
 
     corpus = [dictionary.doc2bow(text) for text in texts]
+    print corpus
     corpora.MmCorpus.serialize(path+'.mm', corpus)
 
 #コーパスの作成(tfidf

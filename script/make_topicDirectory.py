@@ -11,7 +11,7 @@ def make_topicDirectory(path):#hoge_lda.mm
     linecache.clearcache()
     commitnum = target_line.split(" ")[0]#コミット数の読み込み
     topicnum = target_line.split(" ")[1]#トピック数の読み込み
-    print topicnum
+#    print topicnum
     int_topicnum = int(topicnum)
     int_commitnum = int(commitnum)
     dirpath = path.rstrip("_lda.mm")+"_perTopic"
@@ -24,19 +24,21 @@ def make_topicDirectory(path):#hoge_lda.mm
     num = 0
     while num < int_commitnum:
         for linenum in range(startline,startline+int_topicnum):
-            print linenum
-            data.append(linecache.getline(path,linenum).split(" ")[2].rstrip("\n"))
+            data.append(linecache.getline(path,linenum).rstrip("\n").split(" ")[2])
             linecache.clearcache()
         result_topicnum = data.index(max(data))+1
         num = num + 1
+        print result_topicnum
         if os.path.exists(dirpath+"/Topic"+str(result_topicnum)+".txt") == False:
             f = open(dirpath+"/Topic"+str(result_topicnum)+".txt","w")
         else:
             f = open(dirpath+"/Topic"+str(result_topicnum)+".txt","a")
+        #print linecache.getline(path.rstrip("_lda.mm")+".txt",num)
         f.write(linecache.getline(path.rstrip("_lda.mm")+".txt",num))
         linecache.clearcache()
         f.close()
         startline = startline + int_topicnum
+        print data
         data = []
 
 
