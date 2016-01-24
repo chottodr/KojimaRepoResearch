@@ -19,6 +19,7 @@ def summaries(repo):#管理ディレクトリにリポジトリのコミット�
     repo_name = tmp[-1]
     os.chdir("repositories/"+dir_name+"/"+repo_name)
     os.system('git log --reverse --oneline --no-merges --pretty=format:"%s" > ../CommitMessage.txt')
+    os.system('git log --reverse --oneline --no-merges --date=iso --pretty=format:"%s [TIME] %cd" > ../CommitMessage_time.txt')
     os.chdir("../../../")
 
 
